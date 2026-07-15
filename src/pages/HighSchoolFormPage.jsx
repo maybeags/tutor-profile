@@ -4,6 +4,7 @@ import StepIndicator from '../components/StepIndicator'
 import SharedFields from '../components/SharedFields'
 import RadioPillGroup from '../components/RadioPillGroup'
 import CheckboxGroup from '../components/CheckboxGroup'
+import { submitProfileToSheet } from '../lib/submitToSheet'
 
 const GRADES = ['고1', '고2', '고3']
 const TRACKS = ['문과', '이과', '통합(공통)']
@@ -34,7 +35,9 @@ export default function HighSchoolFormPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    navigate('/profile/complete', { state: { type: 'high', ...form } })
+    const data = { type: 'high', ...form }
+    submitProfileToSheet(data)
+    navigate('/profile/complete', { state: data })
   }
 
   return (

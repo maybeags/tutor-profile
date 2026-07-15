@@ -4,6 +4,7 @@ import StepIndicator from '../components/StepIndicator'
 import SharedFields from '../components/SharedFields'
 import RadioPillGroup from '../components/RadioPillGroup'
 import CheckboxGroup from '../components/CheckboxGroup'
+import { submitProfileToSheet } from '../lib/submitToSheet'
 
 const GRADES = ['중1', '중2', '중3']
 const REPORT_CARD_OPTIONS = ['A', 'B', 'C', '없음 / 잘 모름']
@@ -31,7 +32,9 @@ export default function MiddleSchoolFormPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    navigate('/profile/complete', { state: { type: 'middle', ...form } })
+    const data = { type: 'middle', ...form }
+    submitProfileToSheet(data)
+    navigate('/profile/complete', { state: data })
   }
 
   return (
