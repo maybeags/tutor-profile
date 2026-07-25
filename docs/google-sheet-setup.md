@@ -4,11 +4,13 @@
 
 ## 1. 구글 시트 생성
 
-새 [Google Sheets](https://sheets.new) 문서를 만들고, 첫 번째 행에 헤더를 입력합니다.
+새 [Google Sheets](https://sheets.new) 문서를 만들고, 첫 번째 탭의 첫 행에 헤더를 입력합니다.
 
 ```
 제출일시   학생유형   이름   연락처   학교   학년   상세내용
 ```
+
+레벨테스트 결과는 `레벨테스트`라는 별도 탭에 기록되며, 이 탭은 첫 제출 시 헤더와 함께 자동으로 만들어지므로 미리 준비할 필요가 없습니다.
 
 ## 2. Apps Script 붙여넣기
 
@@ -16,18 +18,31 @@
 
 ```javascript
 function doPost(e) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
   const data = JSON.parse(e.postData.contents);
 
-  sheet.appendRow([
-    data.submittedAt,
-    data.type,
-    data.name,
-    data.contact,
-    data.school,
-    data.grade,
-    data.detail,
-  ]);
+  if (data.kind === 'levelTest') {
+    // 레벨테스트 결과 → '레벨테스트' 탭 (없으면 헤더와 함께 자동 생성)
+    const sheet = ss.getSheetByName('레벨테스트') || ss.insertSheet('레벨테스트');
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow([
+        '제출일시', '이름', '연락처', '총점',
+        '문법', '어휘', '독해', '서술형', '취약영역', '오답문항',
+      ]);
+    }
+    sheet.appendRow([
+      data.submittedAt, data.name, data.contact, data.total,
+      data.grammar, data.vocabulary, data.reading, data.writing,
+      data.weakAreas, data.wrongItems,
+    ]);
+  } else {
+    // 학생 프로필 → 첫 번째 탭 (기존과 동일)
+    const sheet = ss.getSheets()[0];
+    sheet.appendRow([
+      data.submittedAt, data.type, data.name,
+      data.contact, data.school, data.grade, data.detail,
+    ]);
+  }
 
   return ContentService
     .createTextOutput(JSON.stringify({ status: 'ok' }))
@@ -36,6 +51,11 @@ function doPost(e) {
 ```
 
 `Ctrl/Cmd + S`로 저장합니다 (프로젝트 이름은 아무거나 상관없어요, 예: `tutor-profile-webhook`).
+
+> **이미 배포된 스크립트의 코드를 고친 경우**: 저장만으로는 반영되지 않습니다.
+> **배포 → 배포 관리 → 연필(수정) 아이콘 → 버전: "새 버전" 선택 → 배포**를 눌러야 적용됩니다.
+> 이 방법은 **웹 앱 URL이 그대로 유지**되므로 GitHub Secret을 다시 등록할 필요가 없습니다.
+> ("새 배포"로 만들면 URL이 바뀌어서 시크릿도 함께 갱신해야 합니다.)
 
 ## 3. 웹 앱으로 배포
 
