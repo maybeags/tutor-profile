@@ -40,6 +40,9 @@ export default function IntroPage() {
                   {tutor.ctaBand.button}
                   <span className="arrow">→</span>
                 </button>
+                <button type="button" className="btn btn-hero-text" onClick={() => navigate('/test')}>
+                  레벨테스트 먼저 보기
+                </button>
               </div>
             </div>
 
@@ -92,6 +95,15 @@ export default function IntroPage() {
                 <span className="feature-keyword">{feature.keyword}</span>
                 <h3 className="feature-title">{feature.title}</h3>
                 <p className="feature-desc">{feature.desc}</p>
+                {feature.link && (
+                  <button
+                    type="button"
+                    className="feature-link"
+                    onClick={() => navigate(feature.link.to)}
+                  >
+                    {feature.link.label} <span className="arrow">→</span>
+                  </button>
+                )}
               </div>
             </Reveal>
           ))}

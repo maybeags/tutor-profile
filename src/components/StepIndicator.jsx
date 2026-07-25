@@ -1,9 +1,9 @@
-const STEPS = ['학년 선택', '정보 입력', '완료']
+const DEFAULT_STEPS = ['학년 선택', '정보 입력', '완료']
 
-export default function StepIndicator({ current }) {
+export default function StepIndicator({ current, steps = DEFAULT_STEPS }) {
   return (
     <div className="step-indicator">
-      {STEPS.map((label, index) => {
+      {steps.map((label, index) => {
         const step = index + 1
         const state = step < current ? 'is-done' : step === current ? 'is-active' : ''
         return (
