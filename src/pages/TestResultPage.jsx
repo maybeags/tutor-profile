@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { gradeTest } from '../lib/gradeTest'
 import { submitTestResultToSheet } from '../lib/submitToSheet'
 import StepIndicator from '../components/StepIndicator'
 import Reveal from '../components/Reveal'
-import { SECTIONS } from '../data/levelTest'
+import { SECTIONS, getTest } from '../data/tests'
 
 const CHOICE_MARKS = ['①', '②', '③', '④']
 const STEP_LABELS = SECTIONS.map((section) => section.label)
@@ -25,22 +25,31 @@ function formatAnswer(question) {
 }
 
 export default function TestResultPage() {
+  const { testId } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
   const [openId, setOpenId] = useState(null)
 
   const state = location.state
-  const result = useMemo(() => (state ? gradeTest(state.responses) : null), [state])
+  const test = getTest(testId)
+  const result = useMemo(
+    () => (test && state ? gradeTest(test, state.responses) : null),
+    [test, state],
+  )
 
   useEffect(() => {
-    if (!result || !state) return
-    submitTestResultToSheet(state.student, result)
+    if (!result || !state || !test) return
+    submitTestResultToSheet(test, state.student, result)
     // Log once per completed attempt.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (!state) {
+  if (!test) {
     return <Navigate to="/test" replace />
+  }
+
+  if (!state) {
+    return <Navigate to={`/test/${test.id}`} replace />
   }
 
   const wrongItems = result.items.filter((item) => !item.correct)
@@ -50,7 +59,7 @@ export default function TestResultPage() {
       <StepIndicator current={STEP_LABELS.length} steps={STEP_LABELS} />
 
       <div className="result-card">
-        <span className="eyebrow">RESULT</span>
+        <span className="eyebrow">RESULT · {test.label}</span>
         <h1 className="form-title">{state.student.name} 학생 진단 결과</h1>
 
         <div className="score-band">

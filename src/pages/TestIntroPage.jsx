@@ -1,38 +1,31 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { SECTIONS, TOTAL_QUESTIONS } from '../data/levelTest'
-
-const SECTION_DETAIL = {
-  grammar: '관계대명사 · 시제 · 분사구문 · 가정법 · 수일치',
-  vocabulary: '문맥 추론 · 반의어 · 다의어 · 구동사 · 파생어',
-  reading: '주제 · 세부 내용 · 빈칸 추론 · 연결어 · 필자의 주장',
-  writing: '배열 영작 · 어형 변화 · 문장 전환 · 조건 영작',
-}
-
-const SECTION_COUNT = {
-  grammar: 6,
-  vocabulary: 5,
-  reading: 5,
-  writing: 4,
-}
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { SECTIONS, countBySection, getTest } from '../data/tests'
 
 export default function TestIntroPage() {
+  const { testId } = useParams()
   const [student, setStudent] = useState({ name: '', contact: '' })
   const navigate = useNavigate()
 
+  const test = getTest(testId)
+
+  if (!test) {
+    return <Navigate to="/test" replace />
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    navigate('/test/quiz', { state: student })
+    navigate(`/test/${test.id}/quiz`, { state: student })
   }
 
   return (
     <div className="page container-narrow">
       <div className="test-hero">
-        <span className="eyebrow">LEVEL TEST</span>
-        <h1 className="test-hero-title">중3 · 예비 고1 영어 진단 테스트</h1>
+        <span className="eyebrow">LEVEL TEST · {test.label}</span>
+        <h1 className="test-hero-title">{test.title}</h1>
         <p className="test-hero-sub">
-          몇 점인지가 아니라 <strong>왜 틀렸는지</strong>를 봅니다. 총 {TOTAL_QUESTIONS}문항을 풀고 나면
-          문법 · 어휘 · 독해 · 서술형 네 영역의 강약점을 바로 확인할 수 있습니다.
+          몇 점인지가 아니라 <strong>왜 틀렸는지</strong>를 봅니다. 총 {test.questions.length}문항을 풀고
+          나면 문법 · 어휘 · 독해 · 서술형 네 영역의 강약점을 바로 확인할 수 있습니다.
         </p>
       </div>
 
@@ -41,9 +34,9 @@ export default function TestIntroPage() {
           <div className="test-outline-item" key={section.key}>
             <div className="test-outline-head">
               <span className="test-outline-label">{section.label}</span>
-              <span className="test-outline-count">{SECTION_COUNT[section.key]}문항</span>
+              <span className="test-outline-count">{countBySection(test, section.key)}문항</span>
             </div>
-            <p className="test-outline-detail">{SECTION_DETAIL[section.key]}</p>
+            <p className="test-outline-detail">{test.sectionDetail[section.key]}</p>
           </div>
         ))}
       </div>
@@ -84,8 +77,8 @@ export default function TestIntroPage() {
         </div>
 
         <div className="form-actions">
-          <button type="button" className="btn btn-ghost" onClick={() => navigate('/')}>
-            홈으로
+          <button type="button" className="btn btn-ghost" onClick={() => navigate('/test')}>
+            이전
           </button>
           <button type="submit" className="btn btn-ink btn-block">
             테스트 시작하기 <span className="arrow">→</span>

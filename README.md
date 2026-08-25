@@ -65,7 +65,7 @@
 
 ### 📝 자동 채점 레벨테스트
 
-중3 · 예비고1 대상 20문항. **객관식은 물론 서술형까지** 클라이언트에서 자동 채점하고 영역별 강약점을 진단합니다.
+학년별(중2 / 중3·예비고1) 20문항. **객관식은 물론 서술형까지** 클라이언트에서 자동 채점하고 영역별 강약점을 진단합니다.
 
 </td>
 </tr>
@@ -98,20 +98,55 @@
 
 ## 레벨테스트
 
-`/test`에서 이름만 남기면 바로 응시할 수 있고, **문법 → 어휘 → 독해 → 서술형** 네 단계로 진행됩니다.
+`/test`에서 학년에 맞는 테스트를 고르고 이름만 남기면 바로 응시할 수 있습니다. 어느 쪽을 골라도 **문법 → 어휘 → 독해 → 서술형** 네 단계, 20문항으로 진행됩니다.
 
-| 영역 | 문항 | 점검 항목 |
-|:---|:---:|:---|
+출제 기준은 **다음 학년으로 넘어갈 때 실제로 무너지는 지점**입니다. 단순 암기 확인이 아니라, 틀렸을 때 *무엇을 안 배웠는지*가 드러나도록 문항마다 `topic` 태그를 답니다.
+
+<table>
+<tr><th align="left" width="50%">
+
+### 中2 &nbsp;<sub>`/test/middle2`</sub>
+
+</th><th align="left" width="50%">
+
+### 中3 &nbsp;<sub>`/test/middle3`</sub>
+
+</th></tr>
+<tr><td valign="top">
+
+중3 과정으로 넘어가기 전, 기초가 제대로 잡혔는지 확인합니다.
+
+| 영역 | | 점검 항목 |
+|:---|:-:|:---|
+| **문법** | 6 | 시제 · 현재진행 · 조동사 · to부정사 · 동명사 · 비교급 |
+| **어휘** | 5 | 문맥 추론 · 반의어 · 유의어 · 구동사 · 파생어 |
+| **독해** | 5 | 요지 · 세부 내용 · 연결어 · 실용문 · 글의 목적 |
+| **서술형** | 4 | 배열 영작 · 어형 변화 · 수동태 전환 · 조건 영작 |
+
+</td><td valign="top">
+
+고1 내신과 모의고사로 넘어갈 준비가 되었는지 확인합니다.
+
+| 영역 | | 점검 항목 |
+|:---|:-:|:---|
 | **문법** | 6 | 관계대명사 · 현재완료 · 분사구문 · 가정법 · 동명사/부정사 · 수일치 |
 | **어휘** | 5 | 문맥 추론 · 반의어 · 다의어 · 구동사 · 파생어 |
-| **독해** | 5 | 주제 · 세부 내용 · 빈칸 추론 · 연결어 · 필자의 주장 <sub>(지문 2편)</sub> |
+| **독해** | 5 | 주제 · 세부 내용 · 빈칸 추론 · 연결어 · 필자의 주장 |
 | **서술형** | 4 | 배열 영작 · 어형 변화 · 문장 전환 · 조건 영작 |
 
-출제 기준은 **중3에서 고1 내신·모의고사로 넘어갈 때 실제로 무너지는 지점**입니다. 단순 암기 확인이 아니라, 틀렸을 때 *무엇을 안 배웠는지*가 드러나도록 문항마다 `topic` 태그를 답니다.
+</td></tr>
+</table>
+
+두 테스트는 **선수 개념 관계**로 이어집니다. 중2에서 `take care of`·비교급·수동태를 확인하고, 중3에서 `keep up with`·관계대명사·가정법으로 올라갑니다. 피드백 문구도 학년에 맞게 따로 쓰여 있어서, 같은 15/20이라도 중2는 *"중3 내신을 안정적으로 준비할 수 있습니다"*, 중3은 *"고1 내신에서…"* 로 다르게 읽힙니다.
 
 <div align="center">
-<img src="docs/screenshot-test-quiz.png" alt="독해 영역 — 지문과 문항" width="88%" />
-<br /><sub>독해 단계 — 지문 2편과 5문항</sub>
+<img src="docs/screenshot-test-select.png" alt="학년별 테스트 선택 화면" width="72%" />
+<br /><sub>/test — 학년에 맞는 테스트 선택</sub>
+</div>
+
+<div align="center">
+<img src="docs/screenshot-test-middle2-quiz.png" alt="중2 독해 영역 — 설명문과 실용문 지문" width="88%" />
+<br /><sub>중2 독해 단계 — 설명문·실용문 지문 2편과 5문항</sub>
 </div>
 
 <br />
@@ -156,12 +191,12 @@
 
 <table>
 <tr>
-<td width="34%" valign="top"><img src="docs/screenshot-test-intro.png" alt="레벨테스트 안내" /></td>
+<td width="34%" valign="top"><img src="docs/screenshot-test-result.png" alt="레벨테스트 결과" /></td>
 <td width="46%" valign="top"><img src="docs/screenshot-full.png" alt="랜딩 페이지 전체" /></td>
 <td width="20%" valign="top"><img src="docs/screenshot-mobile.png" alt="모바일 뷰" /></td>
 </tr>
 <tr>
-<td align="center"><sub>레벨테스트 안내</sub></td>
+<td align="center"><sub>레벨테스트 결과</sub></td>
 <td align="center"><sub>랜딩 — 전체</sub></td>
 <td align="center"><sub>모바일 390px</sub></td>
 </tr>
@@ -195,7 +230,10 @@ src/
 │   └── …                      # SharedFields, RadioPillGroup, CheckboxGroup
 ├── data/
 │   ├── tutorProfile.js        # 랜딩 콘텐츠 (카피 · 경력 · 통계)
-│   └── levelTest.js           # 20문항 · 지문 · 정답 · topic · 해설
+│   └── tests/
+│       ├── index.js           # 테스트 레지스트리 + 공용 SECTIONS
+│       ├── middle2.js         # 중2 — 20문항 · 지문 · 정답 · topic · 해설 · 피드백
+│       └── middle3.js         # 중3·예비고1 — 위와 동일 구조
 ├── lib/
 │   ├── gradeTest.js           # 채점 · 영역별 집계 · 피드백 생성
 │   ├── summary.js             # 프로필 요약 텍스트 조립
@@ -206,13 +244,16 @@ src/
 │   ├── MiddleSchoolFormPage.jsx
 │   ├── HighSchoolFormPage.jsx
 │   ├── SummaryPage.jsx                  # 요약 + 클립보드 복사
+│   ├── TestSelectPage.jsx               # 학년별 테스트 선택
 │   ├── TestIntroPage.jsx                # 레벨테스트 안내
 │   ├── TestQuizPage.jsx                 # 영역별 4단계 응시
 │   └── TestResultPage.jsx               # 채점 결과 · 피드백
 └── styles/index.css           # 디자인 토큰 + 전체 스타일
 ```
 
-> 문항을 바꾸고 싶다면 [`src/data/levelTest.js`](src/data/levelTest.js) **하나만** 고치면 됩니다. 채점과 피드백이 `section` / `topic` 필드를 따라 자동으로 반영됩니다.
+> 문항을 바꾸려면 해당 테스트 파일([`middle2.js`](src/data/tests/middle2.js) 또는 [`middle3.js`](src/data/tests/middle3.js)) **하나만** 고치면 됩니다. 채점·피드백·안내 화면이 모두 `section` / `topic` 필드를 따라 자동으로 반영됩니다.
+>
+> **새 학년 테스트를 추가하려면** 같은 형태의 파일을 하나 만들고 [`tests/index.js`](src/data/tests/index.js)의 `TESTS` 배열에 넣기만 하면 됩니다. 라우팅(`/test/:testId`)과 선택 화면이 자동으로 따라옵니다.
 
 <br />
 

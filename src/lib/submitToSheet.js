@@ -31,7 +31,7 @@ export function submitProfileToSheet(data) {
   })
 }
 
-export function submitTestResultToSheet(student, result) {
+export function submitTestResultToSheet(test, student, result) {
   const byKey = Object.fromEntries(
     result.sections.map((section) => [section.key, `${section.correct}/${section.total}`]),
   )
@@ -47,6 +47,7 @@ export function submitTestResultToSheet(student, result) {
   post({
     kind: 'levelTest',
     submittedAt: new Date().toISOString(),
+    testLabel: test.label,
     name: student.name,
     contact: student.contact,
     total: `${result.totalCorrect}/${result.totalQuestions}`,
