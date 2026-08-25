@@ -26,12 +26,12 @@ function doPost(e) {
     const sheet = ss.getSheetByName('레벨테스트') || ss.insertSheet('레벨테스트');
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
-        '제출일시', '이름', '연락처', '총점',
+        '제출일시', '테스트', '이름', '연락처', '총점',
         '문법', '어휘', '독해', '서술형', '취약영역', '오답문항',
       ]);
     }
     sheet.appendRow([
-      data.submittedAt, data.name, data.contact, data.total,
+      data.submittedAt, data.testLabel, data.name, data.contact, data.total,
       data.grammar, data.vocabulary, data.reading, data.writing,
       data.weakAreas, data.wrongItems,
     ]);
@@ -56,6 +56,14 @@ function doPost(e) {
 > **배포 → 배포 관리 → 연필(수정) 아이콘 → 버전: "새 버전" 선택 → 배포**를 눌러야 적용됩니다.
 > 이 방법은 **웹 앱 URL이 그대로 유지**되므로 GitHub Secret을 다시 등록할 필요가 없습니다.
 > ("새 배포"로 만들면 URL이 바뀌어서 시크릿도 함께 갱신해야 합니다.)
+
+### `테스트` 컬럼에 대하여
+
+레벨테스트가 학년별로 여러 개(중2 / 중3·예비고1)라서 **`테스트` 컬럼**이 두 번째 자리에 추가되었습니다. 이게 있어야 시트에서 15/20이 중2 점수인지 중3 점수인지 구분할 수 있습니다.
+
+**이미 예전 코드로 배포해 둔 경우에도 아무것도 깨지지 않습니다.** Apps Script가 컬럼을 명시적으로 나열하는 구조라, 사이트가 보내는 `testLabel` 값은 그냥 무시되고 행은 정상적으로 쌓입니다. 다만 어느 테스트의 결과인지 표시되지 않을 뿐입니다.
+
+이미 `레벨테스트` 탭에 데이터가 쌓여 있다면, 위 코드로 교체한 뒤 시트에서 **B열을 새로 삽입하고 헤더에 `테스트`를 입력**해 주세요. 기존 행의 B열은 비어 있게 되며(모두 중3·예비고1 결과), 새 제출부터 값이 채워집니다.
 
 ## 3. 웹 앱으로 배포
 

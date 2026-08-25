@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { PASSAGES, QUESTIONS, SECTIONS } from '../data/levelTest'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { SECTIONS, getTest } from '../data/tests'
 import StepIndicator from '../components/StepIndicator'
 import PassageBox from '../components/PassageBox'
 
@@ -85,6 +85,7 @@ function TextQuestion({ question, value, onChange }) {
 }
 
 export default function TestQuizPage() {
+  const { testId } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
   const [stepIndex, setStepIndex] = useState(0)
@@ -92,17 +93,22 @@ export default function TestQuizPage() {
   const topRef = useRef(null)
 
   const student = location.state
+  const test = getTest(testId)
 
   useEffect(() => {
     topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [stepIndex])
 
-  if (!student) {
+  if (!test) {
     return <Navigate to="/test" replace />
   }
 
+  if (!student) {
+    return <Navigate to={`/test/${test.id}`} replace />
+  }
+
   const section = SECTIONS[stepIndex]
-  const sectionQuestions = QUESTIONS.filter((question) => question.section === section.key)
+  const sectionQuestions = test.questions.filter((question) => question.section === section.key)
   const passageKeys = [...new Set(sectionQuestions.map((q) => q.passage).filter(Boolean))]
   const isLastStep = stepIndex === SECTIONS.length - 1
 
@@ -115,7 +121,7 @@ export default function TestQuizPage() {
 
   const handleNext = () => {
     if (isLastStep) {
-      navigate('/test/result', { state: { student, responses } })
+      navigate(`/test/${test.id}/result`, { state: { student, responses } })
       return
     }
     setStepIndex((prev) => prev + 1)
@@ -126,14 +132,16 @@ export default function TestQuizPage() {
       <StepIndicator current={stepIndex + 1} steps={STEP_LABELS} />
 
       <div className="quiz-card">
-        <span className="eyebrow">{section.eyebrow}</span>
+        <span className="eyebrow">
+          {test.label} · {section.eyebrow}
+        </span>
         <h1 className="form-title">{section.label}</h1>
         <p className="form-sub">
           {sectionQuestions.length}문항 중 {answeredCount}문항 응답
         </p>
 
         {passageKeys.map((key) => (
-          <PassageBox key={key} passage={PASSAGES[key]} />
+          <PassageBox key={key} passage={test.passages[key]} />
         ))}
 
         <div className="quiz-list">
@@ -161,7 +169,9 @@ export default function TestQuizPage() {
           <button
             type="button"
             className="btn btn-ghost"
-            onClick={() => (stepIndex === 0 ? navigate('/test') : setStepIndex((p) => p - 1))}
+            onClick={() =>
+              stepIndex === 0 ? navigate(`/test/${test.id}`) : setStepIndex((p) => p - 1)
+            }
           >
             이전
           </button>

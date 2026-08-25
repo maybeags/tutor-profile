@@ -734,6 +734,16 @@ button {
   letter-spacing: 0.04em;
 }
 
+.choice-summary {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  text-align: left;
+}
+
 /* ---------- Forms ---------- */
 
 .form-card {
@@ -1116,6 +1126,9 @@ button {
   line-height: 1.95;
   color: var(--ink-soft);
   word-break: normal;
+  /* Keeps the line structure of notice-style passages (When: / Where: / …)
+     while still wrapping long prose normally. */
+  white-space: pre-line;
 }
 
 .passage-box p + p {
