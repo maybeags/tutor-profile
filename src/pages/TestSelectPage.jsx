@@ -14,7 +14,7 @@ export default function TestSelectPage() {
         </p>
       </div>
 
-      <div className="choice-grid">
+      <div className="choice-grid choice-grid-auto">
         {TESTS.map((test) => (
           <Link to={`/test/${test.id}`} className="choice-card" key={test.id}>
             <div className="choice-hanja">{test.hanja}</div>

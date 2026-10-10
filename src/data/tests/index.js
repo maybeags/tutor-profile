@@ -1,5 +1,6 @@
 import { middle2 } from './middle2'
 import { middle3 } from './middle3'
+import { high1 } from './high1'
 
 // Shared across every test — all of them are graded on the same four areas.
 export const SECTIONS = [
@@ -9,7 +10,7 @@ export const SECTIONS = [
   { key: 'writing', label: '서술형', eyebrow: 'WRITING' },
 ]
 
-export const TESTS = [middle2, middle3]
+export const TESTS = [middle2, middle3, high1]
 
 export function getTest(testId) {
   return TESTS.find((test) => test.id === testId)

@@ -734,6 +734,11 @@ button {
   letter-spacing: 0.04em;
 }
 
+/* Grows with however many tests are registered, instead of a fixed 2 columns. */
+.choice-grid-auto {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+
 .choice-summary {
   font-size: 13px;
   line-height: 1.7;
